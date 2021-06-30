@@ -44,34 +44,28 @@ function Game() {
         setSquares(getSquares(stepNo, gameCourses));
     }, [stepNo]);
 
+    const winner = getWinner(squares);
+    const player = gameCourses[stepNo].player === 'X' ? 'O' : 'X';
+    const status = winner ? 'Winner is ' + winner : 'Next Player is ' + player;
+    const moves = gameCourses.map((course, step) => {
+        const st = step ? 'Move to #' + step : 'Start Game';
+        return (
+            <li key={step}>
+                <button onClick={() => setStepNO(step)}>
+                    {st}
+                </button>
+            </li>
+        );
+    });
+
     const pickSqaure = idx => {
-        if (!getWinner(squares) && !squares[idx]) {
+        if (!winner && !squares[idx]) {
             const player = stepNo % 2 === 0 ? 'X' : 'O';
             const newCourses = gameCourses.slice(0, stepNo + 1)
                 .concat({ player: player, squareIdx: idx });
             setGameCourses(newCourses);
             setStepNO(stepNo + 1);
         }
-    }
-
-    const getStatus = () => {
-        const winner = getWinner(squares);
-        const player = gameCourses[stepNo].player === 'X' ? 'O' : 'X';
-
-        return winner ? 'Winner is ' + winner : 'Next Player is ' + player;
-    }
-
-    const moves = () => {
-        return gameCourses.map((course, step) => {
-            const st = step ? 'Move to #' + step : 'Start Game';
-            return (
-                <li key={step}>
-                    <button onClick={() => setStepNO(step)}>
-                        {st}
-                    </button>
-                </li>
-            );
-        });
     }
 
     return (
@@ -83,8 +77,8 @@ function Game() {
                 />
             </div>
             <div className="game-info">
-                <div>{getStatus()}</div>
-                <ul>{moves()}</ul>
+                <div>{status}</div>
+                <ul>{moves}</ul>
             </div>
         </div>
     )
