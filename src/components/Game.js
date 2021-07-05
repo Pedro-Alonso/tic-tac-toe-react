@@ -4,7 +4,8 @@ import Board from './Board';
 const getSquares = (stepNo, gameCourses) => {
     let squares = Array(9).fill(null);
     if (stepNo > 0) {
-        for (const course of gameCourses) {
+        const curCourses = gameCourses.slice(0, stepNo + 1)
+        for (const course of curCourses) {
             squares[course.squareIdx] = course.player;
         }
     }
