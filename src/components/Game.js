@@ -4,12 +4,11 @@ import Board from './Board';
 const getSquares = (stepNo, gameCourses) => {
     let squares = Array(9).fill(null);
     if (stepNo > 0) {
-        for (let i = 1; i <= stepNo; i++) {
-            const item = gameCourses[i];
-            squares[item.squareIdx] = item.player;
+        for (const course of gameCourses) {
+            squares[course.squareIdx] = course.player;
         }
     }
-
+    
     return squares;
 }
 
@@ -25,9 +24,9 @@ const getWinner = squares => {
         [2, 4, 6]
     ];
 
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] == squares[b] && squares[b] == squares[c]) {
+    for (const line of lines) {
+        const [a, b, c] = line;
+        if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
             return squares[a];
         }
     }
@@ -58,9 +57,8 @@ function Game() {
         );
     });
 
-    const pickSqaure = idx => {
+    const pickSquare = idx => {
         if (!winner && !squares[idx]) {
-            const player = stepNo % 2 === 0 ? 'X' : 'O';
             const newCourses = gameCourses.slice(0, stepNo + 1)
                 .concat({ player: player, squareIdx: idx });
             setGameCourses(newCourses);
@@ -72,7 +70,7 @@ function Game() {
         <div className="game">
             <div className="game-board">
                 <Board
-                    onClick={(idx) => pickSqaure(idx)}
+                    onClick={(idx) => pickSquare(idx)}
                     squares={squares}
                 />
             </div>
@@ -81,7 +79,7 @@ function Game() {
                 <ul>{moves}</ul>
             </div>
         </div>
-    )
+    );
 }
 
 export default Game;
